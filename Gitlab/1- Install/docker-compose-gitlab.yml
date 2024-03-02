@@ -1,0 +1,43 @@
+version: '3.7'
+services:
+  gitlab:
+    image: gitlab/gitlab-ee:16.7.6-ee.0
+    restart: always
+    hostname: gitlab.devops-deniz.net
+    container_name: gitlab-ee
+    environment:
+      GITLAB_ROOT_PASSWORD: 'denizturkmen@7'
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.devops-deniz.net'
+        registry_external_url 'https://gitlab.devops-deniz.net:5010'
+        registry['enable'] = true
+        nginx['redirect_http_to_https'] = true
+        nginx['ssl_certificate'] = "/etc/ssl/certs/gitlab/gitlab.crt"
+        nginx['ssl_certificate_key'] = "/etc/ssl/certs/gitlab/gitlab.key"
+        nginx['ssl_protocols'] = "TLSv1.2 TLSv1.3"
+        registry_nginx['enable'] = true 
+        registry_nginx['listen_port'] = 5010 
+        registry_nginx['ssl_certificate'] = "/etc/ssl/certs/gitlab/gitlab.crt" 
+        registry_nginx['ssl_certificate_key'] = "/etc/ssl/certs/gitlab/gitlab.key" 
+        gitlab_rails['lfs_enabled'] = true
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+        gitlab_rails['backup_keep_time'] = 259200
+        gitlab_rails['gitlab_email_from'] = 'gitlab@denizturkmen.net'
+        gitlab_rails['gitlab_email_reply_to'] = 'noreplygitlab@denizturkmen.net'
+        gitlab_rails['monitoring_whitelist'] = ['192.168.1.10', '127.0.0.1']
+    networks:
+      - gitlab     
+    ports:
+      - '443:443'
+      - '80:80'
+      - '2222:22'
+      - '5010:5010'
+    volumes:
+      - '$GITLAB_HOME/config:/etc/gitlab'
+      - '$GITLAB_HOME/logs:/var/log/gitlab'
+      - '$GITLAB_HOME/data:/var/opt/gitlab'
+      - '$GITLAB_HOME/certs:/etc/ssl/certs/gitlab'
+networks:
+  gitlab:
+    external: true
+  
