@@ -15,10 +15,12 @@ services:
         nginx['ssl_certificate'] = "/etc/ssl/certs/gitlab/gitlab.crt"
         nginx['ssl_certificate_key'] = "/etc/ssl/certs/gitlab/gitlab.key"
         nginx['ssl_protocols'] = "TLSv1.2 TLSv1.3"
+        #registry_nginx['redirect_http_to_https'] = true
         registry_nginx['enable'] = true 
         registry_nginx['listen_port'] = 5010 
         registry_nginx['ssl_certificate'] = "/etc/ssl/certs/gitlab/gitlab.crt" 
         registry_nginx['ssl_certificate_key'] = "/etc/ssl/certs/gitlab/gitlab.key" 
+        gitlab_rails['time_zone'] = 'Europe/Istanbul'
         gitlab_rails['lfs_enabled'] = true
         gitlab_rails['gitlab_shell_ssh_port'] = 2222
         gitlab_rails['backup_keep_time'] = 259200
@@ -36,7 +38,8 @@ services:
       - '$GITLAB_HOME/config:/etc/gitlab'
       - '$GITLAB_HOME/logs:/var/log/gitlab'
       - '$GITLAB_HOME/data:/var/opt/gitlab'
-      - '$GITLAB_HOME/certs:/etc/ssl/certs/gitlab'
+    #  - '$GITLAB_HOME/certs:/etc/ssl/certs/gitlab'
+    #  - '/etc/ssl/certs/gitlab/:/etc/ssl/certs/gitlab/'
 networks:
   gitlab:
     external: true

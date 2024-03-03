@@ -36,11 +36,15 @@ sudo chmod 777 /srv/gitlab
 
 # export 
 export GITLAB_HOME=/srv/gitlab
-sudo vim 
+sudo vim ~/.bashrc 
     export GITLAB_HOME=/srv/gitlab
 
 # create network
 docker network create gitlab
+
+# ssl cp under /etc/ssl/certs/gitlab/
+sudo mkdir -p /etc/ssl/certs/gitlab/
+sudo cp gitlab.* /etc/ssl/certs/gitlab/
 
 ```
 
@@ -52,6 +56,14 @@ docker-compose -f docker-compose-gitlab up -d
 # Check and log
 docker logs -f container_id
 
+# ssl cp into container
+docker cp container_id gitlab.* /etc/ssl/certs/gitlab/
+docker cp gitlab.crt container_id:/etc/ssl/certs/gitlab
+docker cp gitlab.key container_id:/etc/ssl/certs/gitlab
+
+docker exec -it container_id bash
+    gitlab-ctl reconfigure
+    gitlab-ctl hup nginx
 
 # reconfigure
 docker exec -it container_id
@@ -60,6 +72,46 @@ docker exec -it container_id
 ```
 
 
+Useful command 
+``` bash
+# password reset
+gitlab-rake "gitlab:password:reset"
+sudo systemctl restart docker
+
+# list of rake
+gitlab-rake -vT
+gitlab-rake --help
+
+
+# gitlab check
+gitlab-rake gitlab:check
+
+
+# gitlab-ctl 
+gitlab-rake -vT
+
+# re-configure
+gitlab-ctl reconfigure
+
+# update ssl
+gitlab-ctl reconfigure
+gitlab-ctl hup nginx
+gitlab-ctl hup registry
+
+
+# root user exec into docker container
+docker exec -it -u 0 container_id bash
+    whoami
+
+
+
+
+
+
+
+
+
+```
 
 
 
@@ -72,6 +124,8 @@ Gitlab_runner_issue: https://forum.gitlab.com/t/how-to-launch-runner-and-gitlab-
 Github_install_docs_2: https://github.com/danieleagle/gitlab-https-docker/blob/master/docker-compose.yml
 Github_nginx_external: https://github.com/danieleagle/gitlab-https-docker/tree/master
 Gitlab_Upgrade_Path: https://gitlab-com.gitlab.io/support/toolbox/upgrade-path/
-
+Gitlab_backup: https://docs.gitlab.com/omnibus/settings/backups.html
+Gitlab_useful_command_github: https://gist.github.com/royki/c1ea85e2ccdce0dfd186bbaf5b8e8d67
+Gitlab_ssl_renewel: https://docs.gitlab.com/omnibus/settings/ssl/
 
 ```
