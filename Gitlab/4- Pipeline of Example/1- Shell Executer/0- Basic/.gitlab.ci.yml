@@ -1,0 +1,9 @@
+stages:
+  - test
+
+echo-test:
+  stage: test
+  script:
+    - echo "deniz turkmen "
+  tags:
+  - tag-name
