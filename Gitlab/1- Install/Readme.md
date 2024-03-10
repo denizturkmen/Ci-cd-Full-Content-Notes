@@ -104,12 +104,13 @@ docker exec -it -u 0 container_id bash
     whoami
 
 
+```
 
+Investigate the Error
+``` bash
+There was an error running gitlab-ctl reconfigure:
 
-
-
-
-
+letsencrypt_certificate[gitlab.devops-deniz.net] (letsencrypt::http_authorization line 6) had an error: RuntimeError: acme_certificate[staging] (letsencrypt::http_authorization line 43) had an error: RuntimeError: ruby_block[create certificate for gitlab.devops-deniz.net] (letsencrypt::http_authorization line 110) had an error: RuntimeError: [gitlab.devops-deniz.net] Validation failed, unable to request certificate, Errors: [{url: https://acme-staging-v02.api.letsencrypt.org/acme/chall-v3/11604218764/HWVxfA, status: invalid, error: {"type"=>"urn:ietf:params:acme:error:dns", "detail"=>"DNS problem: NXDOMAIN looking up A for gitlab.devops-deniz.net - check that a DNS record exists for this domain; DNS problem: NXDOMAIN looking up AAAA for gitlab.devops-deniz.net - check that a DNS record exists for this domain", "status"=>400}} ]
 
 ```
 
@@ -129,3 +130,4 @@ Gitlab_useful_command_github: https://gist.github.com/royki/c1ea85e2ccdce0dfd186
 Gitlab_ssl_renewel: https://docs.gitlab.com/omnibus/settings/ssl/
 
 ```
+

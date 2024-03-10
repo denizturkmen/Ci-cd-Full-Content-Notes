@@ -38,7 +38,7 @@ services:
       - '$GITLAB_HOME/config:/etc/gitlab'
       - '$GITLAB_HOME/logs:/var/log/gitlab'
       - '$GITLAB_HOME/data:/var/opt/gitlab'
-    #  - '$GITLAB_HOME/certs:/etc/ssl/certs/gitlab'
+      - '$GITLAB_HOME/certs:/etc/ssl/certs/gitlab'
     #  - '/etc/ssl/certs/gitlab/:/etc/ssl/certs/gitlab/'
 networks:
   gitlab:
