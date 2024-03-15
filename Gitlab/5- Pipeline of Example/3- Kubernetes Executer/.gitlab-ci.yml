@@ -1,0 +1,21 @@
+stages:
+  - test
+  - build
+  - deploy
+
+deploy:
+  stage: deploy
+  image: cylab/kubectl
+  tags:
+    - devops-docker-1
+  before_script:
+    # create the configuration (context) for our kubernetes cluster
+    - kubectl config set-cluster deploy-cluster --server="$KUBE_SERVER" --insecure-skip-tls-verify
+    - kubectl config set-credentials gitlab --token=$(echo $KUBE_TOKEN | base64 -d)
+    - kubectl config set-context deploy-cluster --cluster=deploy-cluster --namespace=default --user=gitlab
+    - kubectl config use-context deploy-cluster
+
+  script:
+    - kubectl get pods
+    - envsubst < deploy.tmpl > deploy.yaml
+    - kubectl apply -f deploy.yaml

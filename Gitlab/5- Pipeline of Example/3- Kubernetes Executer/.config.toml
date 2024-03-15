@@ -1,0 +1,51 @@
+root@ci-cd-host:/etc/gitlab-runner# cat config.toml 
+concurrent = 1
+check_interval = 0
+connection_max_age = "15m0s"
+shutdown_timeout = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "shell-runner"
+  url = "https://gitlab.devops-deniz.net/"
+  id = 1
+  token = "jhzkxBsd9AudMdi1YsUR"
+  token_obtained_at = 2024-03-10T19:39:04Z
+  token_expires_at = 0001-01-01T00:00:00Z
+  tls-ca-file = "/etc/ssl/certs/gitlab/gitlab.crt"
+  executor = "shell"
+
+[[runners]]
+  name = "docker-runner"
+  url = "https://gitlab.devops-deniz.net/"
+  id = 2
+  token = "8hHo9PquHybenMHtRFM8"
+  token_obtained_at = 2024-03-10T19:41:16Z
+  token_expires_at = 0001-01-01T00:00:00Z
+  tls-ca-file = "/etc/ssl/certs/gitlab/gitlab.crt"
+  executor = "docker"
+  [runners.docker]
+    tls_verify = false
+    image = "docker"
+    privileged = false
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = false
+    volumes = ["/cache"]
+    extra_hosts = ["gitlab.devops-deniz.net:192.168.1.10","kubernetes.deniz.master.internal:192.168.1.7"]
+    shm_size = 0
+    network_mtu = 0
+
+[[runners]]
+  name = "test"
+  url = "https://gitlab.devops-deniz.net/"
+  id = 36
+  token = "j7A4VbvrHZpe9B8g9v4x"
+  token_obtained_at = 2024-03-14T20:41:14Z
+  token_expires_at = 0001-01-01T00:00:00Z
+  tls-ca-file = "/etc/ssl/certs/gitlab/gitlab.crt"
+  executor = "shell"
+  [runners.cache]
+    MaxUploadedArchiveSize = 0
