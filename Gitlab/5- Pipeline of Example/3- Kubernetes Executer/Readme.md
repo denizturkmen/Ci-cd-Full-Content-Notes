@@ -48,7 +48,7 @@ kubectl apply -f role-dev-bind.yaml
 # check
 kubectl get rolebindings.rbac.authorization.k8s.io | grep developer
 
-# 
+# check auth
 kubectl auth can-i list pods --as=system:serviceaccount:default:gitlab
 
 # create token via service account
@@ -139,7 +139,7 @@ KUBE_TOKEN=base64
 
 
 
-# TroubleShooting
+# TroubleShooting_1
 ``` bash
 # issue
 fatal: unable to access 'https://gitlab.devops-deniz.net/java/k8s-executer-test.git/': Could not resolve host: gitlab.devops-deniz.net
@@ -183,7 +183,7 @@ sudo systemctl status gitlab-runner.service
 ```
 
 
-Troubleshooting_2
+# Troubleshooting_2
 ```bash
 # Issue
 E0315 16:26:43.575080      '''48 memcache.go:265] couldn't get current server API group list: Get "https://kubernetes.deniz.master.internal:6443/api?timeout=32s": dial tcp 192.168.1.1:6443: connect: connection refused''
