@@ -61,14 +61,15 @@ docker cp container_id gitlab.* /etc/ssl/certs/gitlab/
 docker cp gitlab.crt container_id:/etc/ssl/certs/gitlab
 docker cp gitlab.key container_id:/etc/ssl/certs/gitlab
 
-docker exec -it container_id bash
-    gitlab-ctl reconfigure
-    gitlab-ctl hup nginx
-
 # reconfigure
 docker exec -it container_id
     gitlab-ctl reconfigure
 
+# update ssl
+docker exec -it container_id bash
+    gitlab-ctl reconfigure
+    gitlab-ctl hup nginx
+    
 ```
 
 
@@ -94,6 +95,7 @@ gitlab-rake -vT
 gitlab-ctl reconfigure
 
 # update ssl
+
 gitlab-ctl reconfigure
 gitlab-ctl hup nginx
 gitlab-ctl hup registry
