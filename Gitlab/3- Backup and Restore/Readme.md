@@ -49,13 +49,10 @@ ERROR:  must be owner of extension btree_gist
 ERROR:  must be owner of extension pg_trgm
 
 
-``'
+```
 
 # Referance
 ``` bash
 Backup: https://docs.gitlab.com/omnibus/settings/backups.html
 Restore: https://docs.gitlab.com/ee/administration/backup_restore/
-
-
-
 ```
