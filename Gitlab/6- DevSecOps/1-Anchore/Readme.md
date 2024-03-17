@@ -1,6 +1,6 @@
-Install and Configure Anchore
+# Install and Configure Anchore
 
-# Pre-Requitities
+Pre-Requitities
 ``` bash
 docker install
 docker compose install
