@@ -1,4 +1,4 @@
-# Pipeline of Example: on ocker runner
+# Pipeline of Example: on docker runner
 
 
 Note: After gitlab runner is installed, it needs to be privileged to run commands in the docker container.
