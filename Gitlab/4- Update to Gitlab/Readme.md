@@ -2,8 +2,8 @@
 
 Pause the Runners and wait until all jobs are finished.
 ``` bash
-On the top bar, select Menu -> Admin.
-On the left sidebar, select Overview > Runners.
+On the top bar, select Admin AREA
+On the left sidebar, select CI/CD > Runners.
 Click Pause
 
 ```
