@@ -1,0 +1,51 @@
+image: alpine
+
+stages:
+  - build
+  - push
+  - deployment
+
+
+variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+Docker build and push:
+  image: docker
+  services: 
+    - name: docker:20-dind
+      alias: docker
+      command: ["--tls=false"]  
+  stage: build
+  script:
+    - echo "Starting docker image build and push"
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - echo $CI_REGISTRY_IMAGE
+    - echo $CI_COMMIT_REF_SLUG
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
+  # when: manual
+  tags:
+    - devops-docker-1
+  only:
+    - main
+  
+
+# deployment-docker:
+#   stage: deployment
+#   # tags:
+#   # - shell-runner 
+#   script:
+#     - echo "Docker Deployment basliyor...."
+#     - docker login -u=$dhubusername -p=$dhubpassword
+#     - docker pull denizturkmen/frontend-ci-cd:$CI_COMMIT_SHORT_SHA
+#     - docker container rm -f dockerdeployment 
+#     - docker run --name dockerdeployment --detach --publish 8082:80 denizturkmen/frontend-ci-cd:$CI_COMMIT_SHORT_SHA    
+#   # when: manual
+#   only:
+#     - master
+  

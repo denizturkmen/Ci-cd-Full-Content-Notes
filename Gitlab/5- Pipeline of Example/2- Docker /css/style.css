@@ -1,0 +1,136 @@
+/* AnaSayfa SECTİON */
+
+.navbar {
+    border-bottom: lightblue 2px solid;
+}
+.navbar-brand {
+    color: lightblue !important;
+    font-size: 26px;
+}
+.bg-dark {
+    background-color: rgba(0,0,0, .8) !important;
+}
+.nav-link{
+    color: white !important;
+    text-transform: uppercase;
+    transition: color .5s ease;
+}
+.nav-link:hover{
+    color: lightblue !important;
+}
+
+.dropdown-menu {
+    text-transform: uppercase;
+}
+
+/* FOOTER  SECTİON */
+
+#main-footer{
+    color: white;
+    background-color: black;
+    bottom: 0px;
+}
+
+/* Header SECTİON */
+
+#headerSection {
+    background: url("../images/header.jpg");
+    background-size: cover;
+    height: auto;
+
+}
+#headerSection .overlay {
+    background-color: rgba(0,0,0, .7);
+
+}
+#headerSection .row {
+    height: auto;
+   
+}
+#headerSection span {
+    color: lightblue !important;
+}
+.btn-outline-primary {
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 0;
+    cursor: pointer;
+}
+#headerSection h3,h5 {
+    color: white;
+    height: auto;
+    
+   
+   
+}
+#headerSection p{
+    color: white;
+
+}
+
+
+
+/* FEATURES SECTİON */
+
+#features .fa {
+    font-size: 35px;
+}
+#features h3:hover,#features .fa:hover {
+    color: red;
+    cursor: pointer;
+}
+.feature-top {
+    transition: color .5s ease;
+}
+.feature-top:hover {
+    color: red;
+}
+
+/* CARDS SECTİON */
+
+#headerSection .card{
+    background: no-repeat;
+    border: none;
+    opacity: 0.4;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    margin: auto;
+}
+#headerSection .card:hover{
+    opacity: 1;
+}
+#headerSection .fa {
+    font-size: 30px;
+}
+
+#headerSection .fa {
+    font-size: 30px;
+}
+
+.d-flex flex-row justify-content-center {
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-left: auto;
+	margin-right: auto;
+
+}
+
+
+/* CONTACT  SECTİON */
+
+#contact{
+    background-color: #F4F5F9 ;
+}
+#contact .input-group-text {
+    width: 50px;
+    border-radius: 0;
+    color: white;
+    background-color: #1886C7;
+}
+#contact .form-control,#contact .btn {
+    border-radius: 0;
+}
+
+#contact #deniz {
+    height: 160px;
+}
