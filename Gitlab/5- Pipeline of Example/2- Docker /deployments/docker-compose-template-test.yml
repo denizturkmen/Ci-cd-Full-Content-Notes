@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  web-site:
+    image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    restart: always
+    container_name: web-site
+    environment:
+      app: production
+    ports:
+      - 8080:80
+    networks:
+      - website
+networks:
+  website:
+    external: true

@@ -1,0 +1,109 @@
+image: alpine
+
+stages:
+  - Build
+  - Push
+  - Deployment
+
+
+variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+Docker build and push:
+  image: docker
+  services: 
+    - name: docker:20-dind
+      alias: docker
+      command: ["--tls=false"]  
+  stage: Build
+  script:
+    - echo "Starting docker image build and push"
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - echo $CI_REGISTRY_IMAGE
+    - echo $CI_COMMIT_REF_SLUG
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
+  # when: manual
+  tags:
+    - devops-docker-1
+  only:
+    - main
+  
+
+# Deployment:
+#   image: ubuntu:latest
+#   stage: Deployment
+#   only: 
+#     - main
+#   before_script:
+#     - apt-get -yq update
+#     - apt-get -yqq install ssh
+#     - install -m 600 -D /dev/null ~/.ssh/id_rsa
+#     - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+#     - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+#   script:
+#     - echo "deniz"
+#     - ssh $SSH_USER@$SSH_HOST "cd $WORK_DIR && docker compose pull && docker compose up -d && exit"
+#   after_script:
+#     - rm -rf ~/.ssh
+
+# deployment-docker:
+#   stage: deployment
+#   # tags:
+#   # - shell-runner 
+#   script:
+#     - echo "Docker Deployment basliyor...."
+#     - docker login -u=$dhubusername -p=$dhubpassword
+#     - docker pull denizturkmen/frontend-ci-cd:$CI_COMMIT_SHORT_SHA
+#     - docker container rm -f dockerdeployment 
+#     - docker run --name dockerdeployment --detach --publish 8082:80 denizturkmen/frontend-ci-cd:$CI_COMMIT_SHORT_SHA    
+#   # when: manual
+#   only:
+#     - master
+
+
+deploy:
+  image: alpine:latest
+  stage: Deployment
+  tags:
+    - deployment
+  script:
+    - chmod og= $ID_RSA
+    - apk update && apk add openssh-client
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull $TAG_COMMIT"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f my-app || true"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 80:80 --name my-app $TAG_COMMIT"
+  tags:
+    - devops-docker-1
+  only:
+    - main
+  environment:
+    name: production
+    url: http://your_server_IP
+
+
+deploy:
+  image: ubuntu:latest
+  stage: deploy
+  only: 
+    - main
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  script:
+    - ssh $SSH_USER@$SSH_HOST "cd $WORK_DIR && docker compose pull && docker compose up -d && exit"
+  after_script:
+    - rm -rf ~/.ssh
+
+
+    - sshpass -p $pass ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null devopsadmin@ipaddress "docker pull gkgapplications/bridge-ui:$IMAGE_ID"
+        - sshpass -p $pass ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null k8s1@192.168.1.7 "cd /home/k8s1/Desktop && touch denizzzz"

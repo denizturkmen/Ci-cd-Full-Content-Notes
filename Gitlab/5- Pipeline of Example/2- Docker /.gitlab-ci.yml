@@ -1,9 +1,9 @@
 image: alpine
 
 stages:
-  - build
-  - push
-  - deployment
+  - Sonarcheck
+  - Build
+  - Deployment
 
 
 variables:
@@ -18,7 +18,7 @@ Docker build and push:
     - name: docker:20-dind
       alias: docker
       command: ["--tls=false"]  
-  stage: build
+  stage: Build
   script:
     - echo "Starting docker image build and push"
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -34,6 +34,35 @@ Docker build and push:
   only:
     - main
   
+
+Deployment for Test Env:
+  image: ubuntu:20.04
+  stage: Deployment
+  tags:
+    - deployment
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh 
+    - apt-get -yqq install sshpass
+    - apt-get install gettext-base 
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  script:
+    - envsubst < deployment/docker-compose-template-test.yml > deployment/docker-compose-test.yml
+    - sshpass -p $pass ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null gitlab@192.168.1.10 "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
+    - sshpass -p $pass scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r deployment/docker-compose-test.yml gitlab@192.168.1.10:/home/gitlab/deployment/test/ 
+    - sshpass -p $pass ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null gitlab@192.168.1.10 "cd /home/gitlab/deployment/test/ && docker-compose -f docker-compose-test.yml pull"
+    - sshpass -p $pass ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null gitlab@192.168.1.10 "cd /home/gitlab/deployment/test/ && docker-compose -f docker-compose-test.yml stop web-site" 
+    - sshpass -p $pass ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null gitlab@192.168.1.10 "cd /home/gitlab/deployment/test/ && docker-compose -f docker-compose-test.yml rm -f web-site" 
+    - sshpass -p $pass ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null gitlab@192.168.1.10 "cd /home/gitlab/deployment/test/ && docker-compose -f docker-compose-test.yml up -d"                     
+  tags:
+    - devops-docker-1
+  only:
+    - main
+  environment:
+    name: production
+    url: http://192.168.1.10
 
 # deployment-docker:
 #   stage: deployment

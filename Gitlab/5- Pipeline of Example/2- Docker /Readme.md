@@ -103,8 +103,19 @@ variables:
 
 
 
+Create a network
+``` bash
+# create
+docker network create website
 
+```
 
+Adding a variable into gitlab ci
+``` bash
+SSH_HOST  192.168.1.10
+pass      1
+
+```
 
 
 
