@@ -25,20 +25,16 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 
 
-Install argocd with helm
-``` bash
-# install helm with script on the ubuntu/debian
-
-
-
-
-```
-
 # Referans
 ``` bash
 Get started: https://argo-cd.readthedocs.io/en/stable/getting_started/
 Release: https://github.com/argoproj/argo-cd/releases
 Helm: https://github.com/argoproj/argo-helm
+insecure_flag: https://argo-cd.readthedocs.io/en/stable/operator-manual/tls/
+autopilot: https://github.com/argoproj-labs/argocd-autopilot
+install: https://github.com/argoproj/argo-cd/tree/master/manifests?source
+Terraform_Install: https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+Sed editor fixed: https://unix.stackexchange.com/questions/633653/sed-error-bash-sed-i-s-ashu-vishu-test-txt-no-such-file-or-directory
 
 
 
