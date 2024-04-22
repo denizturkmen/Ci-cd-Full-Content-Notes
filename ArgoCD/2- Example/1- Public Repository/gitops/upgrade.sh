@@ -20,6 +20,12 @@ echo $tmp_dir
 # Clone GitHub repo
 git clone git@github.com:dnztest/Argocd.git $tmp_dir
 
+# Docker image from dockerfile
+# docker tag . denizyoutube/nginx:$new_ver
+
+# Push new version to dockerhub
+# docker push denizyoutube/nginx:$new_ver
+
 # Update image tag
 sed -i -e "s/denizyoutube\/nginx:.*/denizyoutube\/nginx:$new_ver/g" $tmp_dir/my-app/1-deployment.yaml
 
