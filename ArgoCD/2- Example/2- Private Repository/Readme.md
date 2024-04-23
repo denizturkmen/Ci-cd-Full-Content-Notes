@@ -73,7 +73,7 @@ kubectl apply -f application.yaml
 # Refereance
 ``` bash
 pulling private image: https://argo-cd.readthedocs.io/en/stable/user-guide/private-repositories/
-
+dd
 
 
 ```
