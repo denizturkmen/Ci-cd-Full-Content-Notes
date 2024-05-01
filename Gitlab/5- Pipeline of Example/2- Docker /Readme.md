@@ -38,7 +38,6 @@ vim config.toml
     volumes = ["/cache"]
     shm_size = 0
     network_mtu = 0
-    extra_hosts = ["gitlab.devops-deniz.net:192.168.1.10"]  
 
 ```
 
