@@ -105,5 +105,5 @@ deploy:
     - rm -rf ~/.ssh
 
 
-    - sshpass -p $pass ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null devopsadmin@ipaddress "docker pull gkgapplications/bridge-ui:$IMAGE_ID"
+    - sshpass -p $pass ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null devopsadmin@ipaddress "docker pull docker_hub_id/bridge-ui:$IMAGE_ID"
         - sshpass -p $pass ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null k8s1@192.168.1.7 "cd /home/k8s1/Desktop && touch denizzzz"
