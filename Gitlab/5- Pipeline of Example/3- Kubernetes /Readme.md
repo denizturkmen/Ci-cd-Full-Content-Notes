@@ -77,7 +77,7 @@ kubectl edit sa gitlab
 .
 .
 secrets:
-- name: gitlab-token
+- name: gitlab-token-new 
 
 
 # check
