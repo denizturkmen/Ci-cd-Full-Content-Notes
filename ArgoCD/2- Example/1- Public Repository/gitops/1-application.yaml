@@ -1,19 +1,19 @@
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: my-app
+  name: public-app
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
-  source:
-    repoURL: https://github.com/dnztest/Argocd.git
-    targetRevision: HEAD
-    path: my-app
   destination:
-    server: https://kubernetes.default.svc
+    namespace: test
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: gitops
+    repoURL: 'https://gitlab.com/deniz.turkmen/argocd-example.git'
+    targetRevision: HEAD
+  project: default
   syncPolicy:
     automated:
       prune: true

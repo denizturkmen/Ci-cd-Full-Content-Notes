@@ -19,12 +19,21 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.11.3/manifests/install.yaml
 
+# checking all object
+kubectl get all -n argocd 
 
 # patch to nodePort
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
 
 # show admin password
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64  -d 
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64  -d && echo ""
+
+# Defining ingress
+kubectl apply -f argocd-ingress.yaml
+
+# patches method for insecure
+kubectl patch configmap argocd-cm -n argocd -p '{"data": {"server.insecure": "true"}}'
+kubectl patch configmap argocd-cm -n argocd --type='merge' -p '{"data": {"server.insecure": "true"}}'
 
 ```
 
@@ -46,7 +55,7 @@ argocd account update-password
 
 ```
 
-Edit confiimap
+Edit configMap
 ``` bash
 kubectl get configmaps -n argocd 
 NAME                        DATA   AGE
