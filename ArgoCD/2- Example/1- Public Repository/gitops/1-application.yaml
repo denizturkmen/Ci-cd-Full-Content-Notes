@@ -11,7 +11,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   source:
     path: gitops
-    repoURL: 'https://gitlab.com/deniz.turkmen/argocd-example.git'
+    repoURL: 'https://github.com/dnztest/argocd-public.git'
     targetRevision: HEAD
   project: default
   syncPolicy:

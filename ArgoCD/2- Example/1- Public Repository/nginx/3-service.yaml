@@ -5,15 +5,12 @@ metadata:
   namespace: test
 spec:
   selector:
-    app: nginx-argocd
+    app: nginx
   type: NodePort
-  sessionAffinity: None
-  sessionAffinityConfig:
-    clientIP:
-      timeoutSeconds: 10800
   ports:
   - name: nginx
     protocol: TCP
     port: 80
-    targetPort: 80 
-    nodePort: 32125
+    targetPort: 80
+    nodePort: 30156
+---
