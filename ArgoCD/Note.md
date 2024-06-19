@@ -12,3 +12,19 @@ Notes
 4- Webhook integration
 
 ```
+
+apiVersion: v1
+ kind: ConfigMap
+ metadata:
+ labels:
+ app.kubernetes.io/name: argocd-image-updater-config
+ app.kubernetes.io/part-of: argocd-image-updater
+ name: argocd-image-updater-config
+ data:
+ registries.conf: |
+ registries:
+ - name: Google Container Registry
+ prefix: eu.gcr.io
+ api_url: https://eu.gcr.io
+ ping: no
+ credentials: secret:<secret-namespace>/<secret-name>#<you-key>

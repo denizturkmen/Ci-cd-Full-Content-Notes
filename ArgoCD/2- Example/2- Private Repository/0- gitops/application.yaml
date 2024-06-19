@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:dnztest/my-app-private.git
+    repoURL: git@github.com:dnztest/argocd-private.git
     targetRevision: HEAD
     path: my-app-private
   destination:
