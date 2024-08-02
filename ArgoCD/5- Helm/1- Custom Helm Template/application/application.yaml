@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: public-app
+  name: argocd-custom-helm-1
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -14,7 +14,7 @@ spec:
       valueFiles:
         - values.yaml
     path: ArgoCD/5- Helm/1- Custom Helm Template
-    repoURL: 'https://github.com/denizturkmen/helm-test'
+    repoURL: 'https://github.com/denizturkmen/Ci-cd-Full-Content-Notes.git'
     targetRevision: HEAD
   project: default
   syncPolicy:
