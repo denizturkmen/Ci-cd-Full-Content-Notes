@@ -13,7 +13,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-    path: ArgoCD/5- Helm/
+    path: ArgoCD/5- Helm/1- Custom Helm Template
     repoURL: 'https://github.com/denizturkmen/helm-test'
     targetRevision: HEAD
   project: default

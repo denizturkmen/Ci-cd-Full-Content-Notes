@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "nginx.fullname" . }}
+  namespace: {{ .Values.namespace.name }}
   labels:
     app: {{ include "nginx.name" . }}
     chart: {{ include "nginx.chart" . }}

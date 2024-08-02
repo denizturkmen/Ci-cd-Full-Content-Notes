@@ -1,5 +1,8 @@
 replicaCount: 1
 
+namespace:
+  name: dev
+
 image:
   repository: nginx
   tag: "1.25.0"
