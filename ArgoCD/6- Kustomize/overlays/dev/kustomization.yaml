@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../../base
+
+namespace: dev
+namePrefix: dev-
+nameSuffix: "-001"
+
+commonLabels:
+  env: dev
+
+images:
+  - name: nginx
+    newTag: 1.25.0
+
+secretGenerator:
+  - name: my-secret
+    envs:
+      - secret-env-file.env

@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-kustomize
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    name: ''
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: 6- Kustomize/overlays/dev
+    repoURL: https://github.com/denizturkmen/Ci-cd-Full-Content-Notes.git
+    targetRevision: main
