@@ -13,8 +13,6 @@ spec:
   source:
     path: ArgoCD/6- Kustomize/overlays/dev
     repoURL: https://github.com/denizturkmen/Ci-cd-Full-Content-Notes.git
-    targetRevision: main
-    project: default
   syncPolicy:
     automated:
       prune: true
