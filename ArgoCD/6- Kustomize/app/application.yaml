@@ -7,11 +7,21 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    name: ''
-    namespace: default
+    namespace: dev
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: 6- Kustomize/overlays/dev
+    path: ArgoCD/6- Kustomize/overlays/dev
     repoURL: https://github.com/denizturkmen/Ci-cd-Full-Content-Notes.git
     targetRevision: main
+    project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=false
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
