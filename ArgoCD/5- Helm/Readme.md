@@ -1,18 +1,5 @@
 # How to Deployment with Kustomize in ArgoCD
 
-### Standalone kustomize install on k8s cluster
-
-``` bash
-# Install
-curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-
-# permission 
-sudo install -o root -g root -m 0755 kustomize /usr/local/bin/kustomize
-
-# check
-kustomize version
-
-```
 
 ### How to install to helm with package manager: debian/ubuntu
 ``` bash
