@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "nginx.fullname" . }}
+  name: {{ include "nginx.fullname" . }}-1
   namespace: {{ .Values.namespace.name }}
   labels:
     app: {{ include "nginx.name" . }}
