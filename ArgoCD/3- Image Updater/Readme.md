@@ -19,7 +19,7 @@ kubectl create secret docker-registry dockerhub-secret \
 kubectl create secret docker-registry image-update-secret \
     --docker-server="https://index.docker.io/v1/" \
     --docker-username="denizyoutube" \
-    --docker-password="dckr_pat_bFG6xjH6sDJ9HmbpXjzpUo1o6_8" \
+    --docker-password="" \
     --docker-email="ytube.deniz.87@gmail.com" \
     -n argocd
 
@@ -52,6 +52,7 @@ data:
         api_url: https://index.docker.io/v1/
         prefix: docker.io
         credentials: dockerhub-secret
+ 
  # Patches
  kubectl patch configmap argocd-image-updater-config -n argocd -p '{"data":{"registries.conf":"registries:\n  - name: DockerHub\n    api_url: https://index.docker.io/v1/\n    prefix: docker.io\n    credentials: image-update-secret\n"}}'
 
