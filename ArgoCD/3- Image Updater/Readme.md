@@ -69,7 +69,7 @@ metadata:
   name: argocd-image-updater-ex
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: argocd-image-updater-ex=denizyoutube/denizyoutube/nginx:v1.1.7
+    argocd-image-updater.argoproj.io/image-list: argocd-image-updater-ex=denizyoutube/nginx:v1.1.7
 spec:
 .
 .

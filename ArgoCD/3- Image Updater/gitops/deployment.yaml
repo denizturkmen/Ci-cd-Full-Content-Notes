@@ -23,7 +23,7 @@ spec:
       serviceAccountName: default
       containers:
       - name: nginx
-        image: denizyoutube/nginx:v1.1.7
+        image: denizyoutube/nginx
         imagePullPolicy: IfNotPresent
         resources:
           requests:
