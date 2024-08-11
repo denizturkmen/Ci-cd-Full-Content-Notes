@@ -20,3 +20,29 @@ spec:
     automated:
       prune: true
       selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list:
+      api=ghcr.io/topahadzi/app
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/repo
+    argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/api.update-strategy: latest
+    argocd-image-updater.argoproj.io/api.pull-secret: pullsecret:argocd/github-pull
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: app
+  project: default
+  source:
+    repoURL: "https://github.com/topahadzi/app.git"
+    path: apps/app
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
