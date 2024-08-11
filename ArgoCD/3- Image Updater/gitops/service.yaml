@@ -1,16 +1,17 @@
+# https://kubernetes.io/docs/concepts/services-networking/service/
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-svc
+  name: myjob
   namespace: test-argocd
 spec:
   selector:
-    app: nginx
-  type: NodePort
+    app: myjob
+  type: ClusterIP
   ports:
-  - name: nginx
+  - name: myjob
     protocol: TCP
     port: 80
-    targetPort: 80
-    nodePort: 30158
+    targetPort: 5000
+    nodePort: 30001
 ---
