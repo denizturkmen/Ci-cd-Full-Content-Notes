@@ -143,9 +143,10 @@ kubectl logs -f -l app.kubernetes.io/name=argocd-image-updater -n argocd
 ```
 
 
-### 
+### Image Tag Control
 ``` bash
-
+kubectl  exec -it -n argocd argocd-image-updater-59ddbfd966-597hv -- sh
+  argocd-image-updater test denizyoutube/nginx --update-strategy latest
 
 
 ```
@@ -173,20 +174,3 @@ getting started: https://argocd-image-updater.readthedocs.io/en/stable/install/i
 
 ```
 
-# Try & Testing
-``` bash
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: your-app
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: your-dockerhub-repo:~v
-    argocd-image-updater.argoproj.io/your-dockerhub-repo.pull-secret: dockerhub-secret
-    argocd-image-updater.argoproj.io/your-dockerhub-repo.update-strategy: semver
-spec:
-  # ... rest of your Application spec
----
-kubectl  exec -it -n argocd argocd-image-updater-59ddbfd966-597hv -- sh
-  argocd-image-updater test denizyoutube/nginx --update-strategy latest
-
-```
