@@ -1,46 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app
+  name: my-application
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: api=ghcr.io/topahadzi/app
-    argocd-image-updater.argoproj.io/api.update-strategy: digest
-    argocd-image-updater.argoproj.io/api.pull-secret: pullsecret:argocd/github-pull
+    argocd-image-updater.argoproj.io/image-list: denizyoutube/nginx
+    argocd-image-updater.argoproj.io/paygate.update-strategy: latest
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: app
+    namespace: test-argocd
   project: default
   source:
-    repoURL: "https://github.com/denizturkmen/Ci-cd-Full-Content-Notes.git"
-    path: ArgoCD/3- Image Updater/gitops
-    targetRevision: main
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: app
-  namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list:
-      api=ghcr.io/topahadzi/app
-    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/repo
-    argocd-image-updater.argoproj.io/git-branch: main
-    argocd-image-updater.argoproj.io/api.update-strategy: latest
-    argocd-image-updater.argoproj.io/api.pull-secret: pullsecret:argocd/github-pull
-spec:
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: app
-  project: default
-  source:
-    repoURL: "https://github.com/topahadzi/app.git"
-    path: apps/app
+    repoURL: "https://github.com/dnztest/argocd-image-updater-poc.git"
+    path: kustomize/overlays/dev
     targetRevision: main
   syncPolicy:
     automated:

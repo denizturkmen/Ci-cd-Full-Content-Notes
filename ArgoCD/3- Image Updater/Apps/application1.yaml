@@ -1,18 +1,41 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-test
+  name: app
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: app=denizyoutube/nginx:~v1.1
+    argocd-image-updater.argoproj.io/api.update-strategy: latest
 spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: app
   project: default
   source:
-    repoURL: "https://github.com/denizturkmen/Ci-cd-Full-Content-Notes.git"
-    path: ArgoCD/3- Image Updater/gitops
+    repoURL: "https://github.com/dnztest/argocd-image-updater-poc.git"
+    path: gitops
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-application
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: denizyoutube/nginx
+    argocd-image-updater.argoproj.io/registries-secret: docker-hub-secret
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: app
+  project: default
+  source:
+    repoURL: "https://github.com/dnztest/argocd-image-updater-poc.git"
+    path: gitops
     targetRevision: main
   syncPolicy:
     automated:

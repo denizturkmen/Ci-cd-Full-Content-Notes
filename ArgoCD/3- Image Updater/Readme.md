@@ -1,16 +1,46 @@
 # How to Install and Configure ArgoCD Image Updater
 
+### Pre-Requisites
+``` bash
+Argocd needs to be installed on kubernetes.
 
+
+```
 
 ### Install Image Updater
 ``` bash
 # stable version install
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/main/manifests/install.yaml
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/manifests/install.yaml
 
 # specific version install
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/v0.13.0/manifests/install.yaml
 
 ```
+
+
+(pullsecret:argocd/dockerhub-secret)
+
+### Public and Private key
+``` bash
+# create elipticcurl
+ssh-keygen -t ed25519 -C "argocd@argocd.com" -f ~/.ssh/argocd_ed25519
+
+# check public
+cat ~/.ssh/argocd_ed25519.pub
+
+# check private
+cat ~/.ssh/argocd_ed25519
+
+```
+
+### Private repository connection via ArgoCD-UI
+``` bash
+# connect
+Settings -> Connect Repo -> ssh keygen must be private and repository 
+
+
+```
+
 
 
 ###  Configure Docker Hub as a Private Registry
@@ -24,12 +54,23 @@ kubectl create secret docker-registry dockerhub-secret \
     -n argocd
 
 # Create docker registry
-kubectl create secret docker-registry image-update-secret \
+kubectl create secret docker-registry dockerhub-secret \
     --docker-server="https://index.docker.io/v1/" \
     --docker-username="denizyoutube" \
-    --docker-password="dckr_pat_J5T9puCltYp6rhMbPYOpA7ks_a0" \
+    --docker-password="dckr_pat_pCfetWd3ZGqpxjExETt5-DL0nbs" \
     --docker-email="ytube.deniz.87@gmail.com" \
     -n argocd
+
+# Success
+kubectl create secret docker-registry dockerhub-secret \
+    --docker-server="https://registry-1.docker.io" \
+    --docker-username="denizyoutube" \
+    --docker-password="dckr_pat_pCfetWd3ZGqpxjExETt5-DL0nbs" \
+    --docker-email="ytube.deniz.87@gmail.com" \
+    -n argocd
+
+# checking
+kubectl get secret -n argocd
 
 ```
 
@@ -48,6 +89,18 @@ data:
         api_url: https://index.docker.io/v1/
         prefix: docker.io
         credentials: dockerhub-secret
+---
+data: 
+  log.level: debug
+  registries.conf: |
+    registries:
+    - name: Docker Hub
+      prefix: docker.io
+      api_url: https://registry-1.docker.io
+      credentials: pullsecret:argocd/dockerhub-secret
+      defaultns: library
+      default: true
+
 ```
 
 ### Annotate ArgoCD Applications 
@@ -83,7 +136,9 @@ kubectl patch configmap argocd-image-updater-config -n argocd -p '{"data":{"regi
 ### Verify the Setup
 ``` bash
 # log inspect
-kubectl logs deployment/argocd-image-updater -n argocd
+kubectl logs -f deployment/argocd-image-updater -n argocd
+or
+kubectl logs -f -l app.kubernetes.io/name=argocd-image-updater -n argocd
 
 ```
 
@@ -115,5 +170,23 @@ update to the most recent pushed version of a mutable tag
 ``` bash
 Release: https://github.com/argoproj-labs/argocd-image-updater/releases
 getting started: https://argocd-image-updater.readthedocs.io/en/stable/install/installation/
+
+```
+
+# Try & Testing
+``` bash
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: your-app
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: your-dockerhub-repo:~v
+    argocd-image-updater.argoproj.io/your-dockerhub-repo.pull-secret: dockerhub-secret
+    argocd-image-updater.argoproj.io/your-dockerhub-repo.update-strategy: semver
+spec:
+  # ... rest of your Application spec
+---
+kubectl  exec -it -n argocd argocd-image-updater-59ddbfd966-597hv -- sh
+  argocd-image-updater test denizyoutube/nginx --update-strategy latest
 
 ```
