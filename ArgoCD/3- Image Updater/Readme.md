@@ -17,9 +17,6 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argoc
 
 ```
 
-
-(pullsecret:argocd/dockerhub-secret)
-
 ### Public and Private key
 ``` bash
 # create elipticcurl
@@ -147,7 +144,6 @@ kubectl logs -f -l app.kubernetes.io/name=argocd-image-updater -n argocd
 ``` bash
 kubectl  exec -it -n argocd argocd-image-updater-59ddbfd966-597hv -- sh
   argocd-image-updater test denizyoutube/nginx --update-strategy latest
-
 
 ```
 
