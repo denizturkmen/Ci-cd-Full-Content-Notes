@@ -62,7 +62,7 @@ kubectl create secret docker-registry dockerhub-secret \
 kubectl create secret docker-registry dockerhub-secret \
     --docker-server="https://registry-1.docker.io" \
     --docker-username="denizyoutube" \
-    --docker-password="dckr_pat_pCfetWd3ZGqpxjExETt5-DL0nbs" \
+    --docker-password="dckr_pat_p-2Axzo8er-FNclT4Ea_pzifmeQ" \
     --docker-email="ytube.deniz.87@gmail.com" \
     -n argocd
 

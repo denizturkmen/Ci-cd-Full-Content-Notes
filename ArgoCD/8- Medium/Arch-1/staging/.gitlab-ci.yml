@@ -1,0 +1,121 @@
+stages:
+  - SonarqubeCheck
+  - Build
+  - PushNewTag
+  - Deployment
+
+variables:
+  IMAGE_ID: $CI_COMMIT_SHORT_SHA-$CI_PIPELINE_IID
+  
+
+Build for Dockerfile:
+  stage: Build
+  before_script:
+    - docker login -u $username -p $password
+    - echo $CI_PIPELINE_IID
+    - echo $IMAGE_ID
+  tags:
+    - devops-shell-1
+  script:
+    - docker image build --tag denizturkmen/python:$IMAGE_ID --tag denizturkmen/python:latest .
+    - docker push denizturkmen/python:$IMAGE_ID
+    - docker push denizturkmen/python:latest
+
+Push NewTag&NewImage for Kustomization:
+  stage: PushNewTag
+  tags:
+    - devops-shell-1
+  script: |
+      echo $CI_COMMIT_BRANCH;	
+      echo "-----------------------------";
+      if [ "$CI_COMMIT_REF_NAME" == "development" ]; then
+        echo "This is the development branch.";
+        echo "New $IMAGE_ID image customization yaml newtag is being pushed..... "
+        git clone https://gitlab_username:$GITLAB_TOKEN@gitlab.devops-deniz.net/gitops-deployment/gitops.git
+        cd gitops/
+        git checkout development
+        git pull origin development 
+        cd PythonEx/kustomize/overlays/development
+        ls -ltr
+        cat kustomization.yaml
+        sed -i "s|^\(\s*newTag:\s*\).*|\1${IMAGE_ID}|g" kustomization.yaml
+        cat kustomization.yaml
+        echo " "
+        git add kustomization.yaml
+        git commit -m "Update image tag to ${IMAGE_ID}"
+        git push --force origin development
+      
+      elif [ "$CI_COMMIT_REF_NAME" == "uat" ]; then
+        echo "This is the UAT branch.";
+        echo "New $IMAGE_ID image customization yaml newtag is being pushed..... "
+        git clone https://gitlab_username:$GITLAB_TOKEN@gitlab.devops-deniz.net/gitops-deployment/gitops.git
+        cd gitops/
+        git checkout uat
+        git pull origin uat 
+        cd PythonEx/kustomize/overlays/uat
+        ls -ltr
+        cat kustomization.yaml
+        sed -i "s|^\(\s*newTag:\s*\).*|\1${IMAGE_ID}|g" kustomization.yaml
+        cat kustomization.yaml
+        echo " "
+        git add kustomization.yaml
+        git commit -m "Update image tag to ${IMAGE_ID}"
+        git push --force origin uat
+      
+      elif [ "$CI_COMMIT_REF_NAME" == "staging" ]; then
+        echo "This is the STAGING branch.";
+        echo "New $IMAGE_ID image customization yaml newtag is being pushed..... "
+        git clone https://gitlab_username:$GITLAB_TOKEN@gitlab.devops-deniz.net/gitops-deployment/gitops.git
+        cd gitops
+        git checkout staging
+        git pull origin staging 
+        cd PythonEx/kustomize/overlays/staging
+        ls -ltr
+        cat kustomization.yaml
+        sed -i "s|^\(\s*newTag:\s*\).*|\1${IMAGE_ID}|g" kustomization.yaml
+        cat kustomization.yaml
+        echo " "
+        git add kustomization.yaml
+        git commit -m "Update image tag to ${IMAGE_ID}"
+        git push --force origin staging
+      
+      elif [ "$CI_COMMIT_REF_NAME" == "production" ]; then
+        echo "This is the PRODUCTION branch.";
+        echo "New $IMAGE_ID image customization yaml newtag is being pushed..... "
+        git clone https://gitlab_username:$GITLAB_TOKEN@gitlab.devops-deniz.net/gitops-deployment/gitops.git
+        cd gitops
+        git checkout production
+        git pull origin production 
+        cd PythonEx/kustomize/overlays/production
+        ls -ltr
+        cat kustomization.yaml
+        sed -i "s|^\(\s*newTag:\s*\).*|\1${IMAGE_ID}|g" kustomization.yaml
+        cat kustomization.yaml
+        echo " "
+        git add kustomization.yaml
+        git commit -m "Update image tag to ${IMAGE_ID}"
+        git push --force origin production
+      
+      else
+        echo "Branch not selected for distribution...."
+      fi
+
+
+# Deployment for Development Envrionment:
+#   stage: Deployment
+#   tags:
+#     - devops-shell-1
+#   script:
+#     - 
+#     - echo $CI_COMMIT_REF_NAME
+#     - git clone https://gitlab_username:$GITLAB_TOKEN@gitlab.devops-deniz.net/gitops-deployment/gitops.git
+#     - cd gitops/PythonEx/kustomize/overlays/development
+#     - git checkout development
+#     - git pull origin development 
+#     - ls -ltr
+#     - cat kustomization.yaml
+#     - sed -i "s|^\(\s*newTag:\s*\).*|\1${CI_COMMIT_SHORT_SHA}|g" kustomization.yaml
+#     - cat kustomization.yaml
+#     - git add kustomization.yaml
+#     - git commit -m "Update image tag to ${CI_COMMIT_SHORT_SHA}"
+#     - git push --force origin development
