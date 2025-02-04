@@ -25,3 +25,4 @@ sudo gitlab-runner register --url https://gitlab.devops-deniz.net/ --registratio
 sudo gitlab-runner register --url https://gitlab.devops-deniz.net/ --registration-token  CKMCokGX2YzzzsJbto36 --tls-ca-file /etc/ssl/certs/gitlab/gitlab.crt
 
 ```
+
