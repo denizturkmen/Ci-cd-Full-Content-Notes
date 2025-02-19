@@ -23,6 +23,7 @@ sudo gitlab-runner register --url https://gitlab.devops-deniz.net/ --registratio
 # Command to register runner with SSL
 sudo gitlab-runner register --url https://gitlab.devops-deniz.net/ --registration-token TOKEN --tls-ca-file /my/path/gitlab/gitlab.myserver.com.pem
 sudo gitlab-runner register --url https://gitlab.devops-deniz.net/ --registration-token  CKMCokGX2YzzzsJbto36 --tls-ca-file /etc/ssl/certs/gitlab/gitlab.crt
+sudo gitlab-runner register --url https://gitlab.devopskings.com.tr/ --registration-token  gZ28_s4dzqRoqHyvdbsV --tls-ca-file /etc/gitlab/ssl/gitlab.crt
 
 ```
 

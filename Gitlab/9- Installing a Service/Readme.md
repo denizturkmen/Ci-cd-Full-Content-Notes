@@ -14,10 +14,14 @@ sudo apt-add-repository "deb https://packages.gitlab.com/gitlab/gitlab-ee/ubuntu
 
 # List all available versions to find the specific version you want to install
 sudo apt-cache madison gitlab-ce
+sudo apt-cache madison gitlab-ee
 
 # Install: Required. You must change the password in gitlab-ui.
-sudo EXTERNAL_URL="http://gitlab.devopskings.com.tr" GITLAB_ROOT_EMAIL="traning.deniz@gmail.com" GITLAB_ROOT_PASSWORD="YdX4UNQdyJ" apt-get install gitlab-ee=17.4.0-ee.0 
 sudo EXTERNAL_URL="http://gitlab.devopskings.com.tr" GITLAB_ROOT_EMAIL="traning.deniz@gmail.com" GITLAB_ROOT_PASSWORD="<strongpassword>" apt-get install gitlab-ee=17.4.0-ee.0 
+sudo EXTERNAL_URL="http://gitlab.devopskings.com.tr" GITLAB_ROOT_EMAIL="traning.deniz@gmail.com" GITLAB_ROOT_PASSWORD="YdX4UNQdyJ" apt-get install gitlab-ee=17.4.0-ee.0 
+
+# Install: Required. You must change the password in gitlab-ui for gitlab-ce
+sudo EXTERNAL_URL="http://gitlab-ce.denizturkmen.com.tr" GITLAB_ROOT_EMAIL="traning.deniz@gmail.com" GITLAB_ROOT_PASSWORD="YdX4UNQdyJ" apt-get install gitlab-ce=17.4.0-ce.0 
 
 # check
 sudo systemctl status gitlab-runsvdir.service
@@ -68,7 +72,7 @@ sudo vim /etc/gitlab/gitlab.rb
     nginx['enable'] = true
     nginx['ssl_protocols'] = "TLSv1.2 TLSv1.3"
     # nginx['listen_port'] = 8081 try 
-    nginx['real_ip_trusted_addresses'] = ['192.168.1.10']
+    nginx['real_ip_trusted_addresses'] = ['192.168.1.6']
     nginx['real_ip_header'] = 'X-Forwarded-For'
     nginx['real_ip_recursive'] =' on'
 

@@ -45,6 +45,7 @@ kubectl get po -n tekton-pipelines
 Release: https://github.com/tektoncd/dashboard
 Dashboard: https://github.com/tektoncd/dashboard/blob/main/docs/install.md
 cli: https://tekton.dev/docs/cli/
+Install: https://tekton.dev/docs/installation/pipelines/
 
 
 
